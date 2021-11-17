@@ -1,6 +1,6 @@
-using System.Runtime.Intrinsics.X86;
 using ContosoUniversity.Data;
 using ContosoUniversity.Models;
+using ContosoUniversity.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -20,23 +20,20 @@ namespace ContosoUniversity.Pages.Students
             return Page();
         }
 
-        [BindProperty] public Student Student { get; set; }
+        [BindProperty] public StudentVM StudentVM{ get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-            var emptyStudent = new Student();
-
-            if (await TryUpdateModelAsync<Student>(
-                    emptyStudent, "student",
-                    s => s.LastName, s => s.EnrollmentDate))
+            if (!ModelState.IsValid)
             {
-                _context.Students.Add(emptyStudent);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
+                return Page();
             }
 
-            return Page();
+            var entry = _context.Add(new Student());
+            entry.CurrentValues.SetValues(StudentVM);
+            await _context.SaveChangesAsync();
+            return RedirectToPage("./Index");
         }
     }
 }
