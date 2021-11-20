@@ -23,6 +23,10 @@ namespace ContosoUniversity.Data
             modelBuilder.Entity<Course>().ToTable("Course");
             modelBuilder.Entity<Enrollment>().ToTable("Enrollment");
             modelBuilder.Entity<Student>().ToTable("Student");
+            modelBuilder.Entity<Department>()
+                .HasOne(d => d.Administrator)
+                .WithMany()
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
