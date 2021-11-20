@@ -67,9 +67,14 @@ namespace ContosoUniversity.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FirstMidName")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("FirstName");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.HasKey("ID");
